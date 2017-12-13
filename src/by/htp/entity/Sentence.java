@@ -19,6 +19,58 @@ public class Sentence {
 	}
 	
 	
+	/**
+	 * The method prints words and amount of repeating this word in sentence.
+	 */
+	public void printWordsAmount() {
+
+		for (int i = 0; i < words.size(); i++) {
+			int value = 0;
+			for (int j = 0; j < words.size() - 1; j++) {
+				if (words.get(i).getName().equalsIgnoreCase(words.get(j).getName())) {
+					value++;
+				}
+			}
+			System.out.printf("Word: %s \t amount = %d %n", words.get(i).getName(), value);
+		}
+	}
+
+	public String changeLetter(int position, char symbol) {
+
+		position--;
+		List<Word> words = new ArrayList<>();
+		for (Word word : this.words) {
+			String changingWord = word.changeLetter(symbol, position);
+			words.add(new Word(changingWord));
+		}
+
+		return wordsInSentenceByIndex(words, startOfWords);
+
+	}
+
+	/**
+	 * The method prints numeric value of word by alphabet, it avoids all punctuation symbols.
+	 */
+	public void printByAlphapetNum() {
+
+		char[] originalSentence = this.originalSentence.toCharArray();
+		String[] numWords = new String[originalSentence.length];
+
+		for (int i = 0; i < originalSentence.length; i++) {
+			if (originalSentence[i] >= 65 && originalSentence[i] <= 90) {
+				int temp = (int) originalSentence[i] - 64;
+				numWords[i] = String.valueOf(temp);
+			} else if (originalSentence[i] >= 97 && originalSentence[i] <= 122) {
+				int temp = (int) originalSentence[i] - 96;
+				numWords[i] = String.valueOf(temp);
+			} else {
+				numWords[i] = String.valueOf(originalSentence[i]);
+			}
+		}
+
+		System.out.println(fromArrayToString(numWords));
+	}
+	
 	public int amountPunctuationMarks(){
 		int amount = 0;
 		String marks = "!?,.;";
@@ -29,6 +81,55 @@ public class Sentence {
 			}
 		}
 		return amount;
+	}
+	
+	/**
+	 * This method deletes area between two symbols which are indicated in parameters.
+	 * The method works with ArrayList and loops;
+	 * 
+	 * @param border1 - start of deleting
+	 * @param border2 - end of deleting
+	 */
+
+	
+	public String deleteBlock(Character border1, Character border2) {
+
+		List<Character> sentence = new LinkedList<Character>();
+
+		for (Character ch : originalSentence.toCharArray()) {
+			sentence.add(ch);
+		}
+
+		for (int i = 0; i < sentence.size(); i++) {
+
+			if (sentence.get(i) == border1) {
+				do {
+					sentence.remove(i + 1);
+				} while (sentence.get(i + 1) != border2);
+			}
+		}
+
+		return fromListToString(sentence);
+
+	}
+	
+	/**
+	 * The second solution of deleting area between two delimiters.
+	 * It works only for one block.
+	 * There are used methods String.indexOf() and StringBuffer.delete();
+	 * @param border1 - start of deleting
+	 * @param border2 - end of deleting
+	 */
+	
+	public void deleteBlock1(Character border1, Character border2){
+		
+		int start = originalSentence.indexOf(border1);
+		int finish = originalSentence.indexOf(border2);
+
+		StringBuilder sb = new StringBuilder(originalSentence);
+		sb.delete(start + 1, finish);
+		System.out.println(sb);
+		
 	}
 	
 	public boolean isConsonantMore(int numOfWord){
@@ -57,67 +158,28 @@ public class Sentence {
 		return amount;
 	}
 	
+	private String fromArrayToString(String[] array){
+		StringBuilder builder = new StringBuilder();
+		for (String ch : array) {
+			builder.append(ch).append(" ");
 
-
-	public String deleteBlock(Character border1, Character border2) {
-
-		List<Character> sentence = new LinkedList<Character>();
-
-		for (Character ch : originalSentence.toCharArray()) {
-			sentence.add(ch);
 		}
+		return builder.toString();
+	}
+	
+	private String wordsInSentenceByIndex(List<Word> words, List<Integer> num) {
+		char[] sentenceInArray = getOriginalSentence().toCharArray();
+		for (int j = 0; j < num.size(); j++) {
+			char[] wordInArray = words.get(j).getName().toCharArray();
 
-		for (int i = 0; i < sentence.size(); i++) {
-
-			if (sentence.get(i) == border1) {
-				do {
-					sentence.remove(i + 1);
-				} while (sentence.get(i + 1) != border2);
+			for (int i = 0; i < wordInArray.length; i++) {
+				sentenceInArray[num.get(j) + i] = wordInArray[i];
 			}
 		}
-
-		return fromListToString(sentence);
+		return new String(sentenceInArray);
 
 	}
-
 	
-	private String fromListToString(List<Character> list) {
-		
-		StringBuilder sen = new StringBuilder();
-		for (Character ch : list) {
-			sen.append(ch);
-		}
-		return sen.toString();
-	}
-
-	public void printWordsAmount() {
-
-		for (int i = 0; i < words.size(); i++) {
-			int value = 0;
-			for (int j = 0; j < words.size() - 1; j++) {
-				if (words.get(i).getName().equalsIgnoreCase(words.get(j).getName())) {
-					value++;
-				}
-			}
-			System.out.printf("Word: %s \t amount = %d %n", words.get(i).getName(), value);
-		}
-	}
-
-	public String changeLetter(int position, char symbol) {
-
-		position--;
-		List<Word> words = new ArrayList<>();
-		for (Word word : this.words) {
-			String changingWord = word.changeLetter(symbol, position);
-			words.add(new Word(changingWord));
-		}
-
-		return wordsInSentenceByIndex(words, startOfWords);
-
-	}
-
-	
-
 	private void splitSentence(Sentence sentence) {
 		for (String splitWord : sentence.getOriginalSentence().split("[\\s+\\d\\p{Punct}]")) {
 			if (splitWord.length() != 0) {
@@ -125,7 +187,12 @@ public class Sentence {
 			}
 		}
 	}
-
+	
+	/**
+	 * 
+	 * This method finds position beginning each words and adds their in int[] with number of starting all words.
+	 * @param sentence
+	 */
 	private void startOfWord(Sentence sentence) {
 		char[] sentenceInArray = sentence.getOriginalSentence().toCharArray();
 		boolean startOfWord = false;
@@ -140,47 +207,14 @@ public class Sentence {
 			}
 		}
 	}
-
-	private String wordsInSentenceByIndex(List<Word> words, List<Integer> num) {
-		char[] sentenceInArray = getOriginalSentence().toCharArray();
-		for (int j = 0; j < num.size(); j++) {
-			char[] wordInArray = words.get(j).getName().toCharArray();
-
-			for (int i = 0; i < wordInArray.length; i++) {
-				sentenceInArray[num.get(j) + i] = wordInArray[i];
-			}
-		}
-		return new String(sentenceInArray);
-
-	}
-
-	public void printByAlphapetNum() {
-
-		char[] originalSentence = this.originalSentence.toCharArray();
-		String[] numWords = new String[originalSentence.length];
-
-		for (int i = 0; i < originalSentence.length; i++) {
-			if (originalSentence[i] >= 65 && originalSentence[i] <= 90) {
-				int temp = (int) originalSentence[i] - 64;
-				numWords[i] = String.valueOf(temp);
-			} else if (originalSentence[i] >= 97 && originalSentence[i] <= 122) {
-				int temp = (int) originalSentence[i] - 96;
-				numWords[i] = String.valueOf(temp);
-			} else {
-				numWords[i] = String.valueOf(originalSentence[i]);
-			}
-		}
-
-		System.out.println(fromArrayToString(numWords));
-	}
 	
-	private String fromArrayToString(String[] array){
-		StringBuilder builder = new StringBuilder();
-		for (String ch : array) {
-			builder.append(ch).append(" ");
-
+	private String fromListToString(List<Character> list) {
+		
+		StringBuilder sen = new StringBuilder();
+		for (Character ch : list) {
+			sen.append(ch);
 		}
-		return builder.toString();
+		return sen.toString();
 	}
 
 	public String getOriginalSentence() {

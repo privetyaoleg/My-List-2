@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Word {
 	
-	private String name;
+	private final String name;
 	private List<Character> symbols = new ArrayList<>();
 	
 
