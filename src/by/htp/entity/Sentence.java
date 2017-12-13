@@ -11,6 +11,31 @@ public class Sentence {
 
 	private final String originalSentence;
 
+	public Sentence(String sentence) {
+		this.originalSentence = sentence;
+		splitSentence(this);
+		startOfWord(this);
+
+	}
+	
+	public boolean isConsonantMore(int numOfWord){
+		int countConsonant = 0;
+		int countVowel = 0;
+		String consonantLetters = "qwrtpsdfghjklzxcvbnm";
+
+		for (Character cha : words.get(numOfWord - 1).getSymbols()) {
+			if (consonantLetters.contains(String.valueOf(cha))){
+				countConsonant++;
+			} else {
+				countVowel++;
+			}
+		}
+		
+		return countConsonant > countVowel;
+	}
+	
+	
+	
 	public String deleteBlock(Character border1, Character border2) {
 
 		List<Character> sentence = new LinkedList<Character>();
@@ -34,12 +59,12 @@ public class Sentence {
 
 	
 	public String fromListToString(List<Character> list) {
+		
 		StringBuilder sen = new StringBuilder();
 		for (Character ch : list) {
 			sen.append(ch);
 		}
 		return sen.toString();
-
 	}
 
 	public void printWordsAmount() {
@@ -68,12 +93,7 @@ public class Sentence {
 
 	}
 
-	public Sentence(String sentence) {
-		this.originalSentence = sentence;
-		splitSentence(this);
-		startOfWord(this);
-
-	}
+	
 
 	public void splitSentence(Sentence sentence) {
 		for (String splitWord : sentence.getOriginalSentence().split("[\\s+\\d\\p{Punct}]")) {
@@ -128,13 +148,16 @@ public class Sentence {
 			}
 		}
 
+		System.out.println(fromArrayToString(numWords));
+	}
+	
+	public String fromArrayToString(String[] array){
 		StringBuilder builder = new StringBuilder();
-		for (String ch : numWords) {
+		for (String ch : array) {
 			builder.append(ch).append(" ");
 
 		}
-
-		System.out.println(builder);
+		return builder.toString();
 	}
 
 	public String getOriginalSentence() {

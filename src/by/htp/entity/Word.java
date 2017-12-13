@@ -29,6 +29,11 @@ public class Word {
 	}
 	
 	
+	public List<Character> getSymbols() {
+		return symbols;
+	}
+
+
 	public void wordToSymbols(Word word){
 		for (Character ch : word.getName().toCharArray()){
 			symbols.add(ch);

@@ -20,8 +20,8 @@ public class Main {
 			
 			System.out.println(sentence.getOriginalSentence());
 			System.out.println(sentence.changeLetter(2, '*'));
-			System.out.println(sentence.deleteBlock('<','>'));
-			
+			System.out.println(sentence.deleteBlock('<','>'));	
+			System.out.println(sentence.isConsonantMore(9));
 			
 			sentence.printByAlphapetNum();
 //			sentence.printWordsAmount();
