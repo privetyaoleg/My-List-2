@@ -121,14 +121,14 @@ public class Sentence {
 	 * @param border2 - end of deleting
 	 */
 	
-	public void deleteBlock1(Character border1, Character border2){
+	public String deleteBlock1(Character border1, Character border2){
 		
 		int start = originalSentence.indexOf(border1);
 		int finish = originalSentence.indexOf(border2);
 
 		StringBuilder sb = new StringBuilder(originalSentence);
 		sb.delete(start + 1, finish);
-		System.out.println(sb);
+		return sb.toString();
 		
 	}
 	
