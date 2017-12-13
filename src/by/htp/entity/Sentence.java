@@ -18,6 +18,19 @@ public class Sentence {
 
 	}
 	
+	
+	public int amountPunctuationMarks(){
+		int amount = 0;
+		String marks = "!?,.;";
+		char[] sentenceInArray = originalSentence.toCharArray();
+		for (char c : sentenceInArray) {
+			if(marks.contains(String.valueOf(c))){
+				amount++;
+			}
+		}
+		return amount;
+	}
+	
 	public boolean isConsonantMore(int numOfWord){
 		int countConsonant = 0;
 		int countVowel = 0;
@@ -29,13 +42,23 @@ public class Sentence {
 			} else {
 				countVowel++;
 			}
-		}
-		
+		}	
 		return countConsonant > countVowel;
 	}
 	
+	public int amountVowelStart(){
+		int amount = 0;
+		String consonantLetters = "qwrtpsdfghjklzxcvbnm";
+		for (Word word : words){
+			if(!consonantLetters.contains(String.valueOf(word.getSymbols().get(0)))){
+				amount++;
+			}
+		}
+		return amount;
+	}
 	
-	
+
+
 	public String deleteBlock(Character border1, Character border2) {
 
 		List<Character> sentence = new LinkedList<Character>();
@@ -58,7 +81,7 @@ public class Sentence {
 	}
 
 	
-	public String fromListToString(List<Character> list) {
+	private String fromListToString(List<Character> list) {
 		
 		StringBuilder sen = new StringBuilder();
 		for (Character ch : list) {
@@ -95,7 +118,7 @@ public class Sentence {
 
 	
 
-	public void splitSentence(Sentence sentence) {
+	private void splitSentence(Sentence sentence) {
 		for (String splitWord : sentence.getOriginalSentence().split("[\\s+\\d\\p{Punct}]")) {
 			if (splitWord.length() != 0) {
 				words.add(new Word(splitWord));
@@ -103,7 +126,7 @@ public class Sentence {
 		}
 	}
 
-	public void startOfWord(Sentence sentence) {
+	private void startOfWord(Sentence sentence) {
 		char[] sentenceInArray = sentence.getOriginalSentence().toCharArray();
 		boolean startOfWord = false;
 		for (int i = 0; i < sentenceInArray.length; i++) {
@@ -118,7 +141,7 @@ public class Sentence {
 		}
 	}
 
-	public String wordsInSentenceByIndex(List<Word> words, List<Integer> num) {
+	private String wordsInSentenceByIndex(List<Word> words, List<Integer> num) {
 		char[] sentenceInArray = getOriginalSentence().toCharArray();
 		for (int j = 0; j < num.size(); j++) {
 			char[] wordInArray = words.get(j).getName().toCharArray();
@@ -151,7 +174,7 @@ public class Sentence {
 		System.out.println(fromArrayToString(numWords));
 	}
 	
-	public String fromArrayToString(String[] array){
+	private String fromArrayToString(String[] array){
 		StringBuilder builder = new StringBuilder();
 		for (String ch : array) {
 			builder.append(ch).append(" ");
@@ -163,5 +186,11 @@ public class Sentence {
 	public String getOriginalSentence() {
 		return originalSentence;
 	}
-
+	
+	
+	
+	public List<Word> getWords() {
+		return words;
+	}
+	
 }

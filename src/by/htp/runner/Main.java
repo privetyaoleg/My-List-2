@@ -22,6 +22,9 @@ public class Main {
 			System.out.println(sentence.changeLetter(2, '*'));
 			System.out.println(sentence.deleteBlock('<','>'));	
 			System.out.println(sentence.isConsonantMore(9));
+			System.out.println("Amount words wich start with vowel letter = " + sentence.amountVowelStart());
+			System.out.println("Amount of words in sentence = " + sentence.getWords().size());
+			System.out.println("Amount of punctuation marks = " + sentence.amountPunctuationMarks());
 			
 			sentence.printByAlphapetNum();
 //			sentence.printWordsAmount();
