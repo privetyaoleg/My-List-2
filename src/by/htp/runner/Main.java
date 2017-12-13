@@ -25,6 +25,8 @@ public class Main {
 			
 			sentence.printByAlphapetNum();
 //			sentence.printWordsAmount();
+			
+			String s = s;
 	
 
 	}
