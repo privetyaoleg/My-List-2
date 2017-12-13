@@ -13,6 +13,41 @@ public class Sentence {
 
 	
 	
+	public String deleteBlock(Character border1, Character border2){
+		
+		int start = 0;
+		int finish = 0;
+		
+		ArrayList<Character> sentence = new ArrayList<Character>();
+		
+		
+		for (Character ch : originalSentence.toCharArray()){
+			sentence.add(ch);
+		}
+		
+		for (int i = 0; i < sentence.size(); i++) {
+			
+			if (sentence.get(i) == border1){
+				do{
+					sentence.remove(i+1);
+				}
+				while(sentence.get(i+1) != border2);
+				
+				
+			}
+		}
+		
+		 StringBuilder sen = new StringBuilder();
+		 for(Character ch: sentence){
+			 	
+		        sen.append(ch);
+		    }
+		
+		return sen.toString();
+
+	}
+	
+	
 	public void printWordsAmount(){
 		
 		for (int i = 0; i < words.size(); i++){
@@ -25,6 +60,8 @@ public class Sentence {
 			System.out.printf("Word: %s \t amount = %d %n", words.get(i).getName(), value);
 		}
 	}
+	
+	
 	
 
 	
